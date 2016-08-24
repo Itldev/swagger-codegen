@@ -1855,18 +1855,26 @@ public class DefaultCodegen {
         // if "consumes" is defined (per operation or using global definition)
         if (consumes != null && consumes.size() > 0) {
             List<Map<String, String>> c = new ArrayList<Map<String, String>>();
-            int count = 0;
-            for (String key : consumes) {
-                Map<String, String> mediaType = new HashMap<String, String>();
-                // escape quotation to avoid code injection
-                mediaType.put("mediaType", escapeText(escapeQuotationMark(key)));
-                count += 1;
-                if (count < consumes.size()) {
-                    mediaType.put("hasMore", "true");
-                } else {
-                    mediaType.put("hasMore", null);
-                }
-                c.add(mediaType);
+            
+            // if "consumes" is defined wildcards, shorten to wildcards only
+            if(consumes.contains("*/*")) {
+            	c.add(new HashMap<String, String>(){
+            		{put("mediaType", "*/*");}
+            	});
+            } else {
+	            int count = 0;
+	            for (String key : consumes) {
+	                Map<String, String> mediaType = new HashMap<String, String>();
+	                // escape quotation to avoid code injection
+	                mediaType.put("mediaType", escapeText(escapeQuotationMark(key)));
+	                count += 1;
+	                if (count < consumes.size()) {
+	                    mediaType.put("hasMore", "true");
+	                } else {
+	                    mediaType.put("hasMore", null);
+	                }
+	                c.add(mediaType);
+	            }
             }
             op.consumes = c;
             op.hasConsumes = true;
@@ -1889,18 +1897,26 @@ public class DefaultCodegen {
         // if "produces" is defined (per operation or using global definition)
         if (produces != null && produces.size() > 0) {
             List<Map<String, String>> c = new ArrayList<Map<String, String>>();
+            
+            // if "produces" is defined wildcards, shorten to wildcards only
+            if(produces.contains("*/*")) {
+            	c.add(new HashMap<String, String>(){
+            		{put("mediaType", "*/*");}
+            	});
+            } else {
             int count = 0;
-            for (String key : produces) {
-                Map<String, String> mediaType = new HashMap<String, String>();
-                // escape quotation to avoid code injection
-                mediaType.put("mediaType", escapeText(escapeQuotationMark(key)));
-                count += 1;
-                if (count < produces.size()) {
-                    mediaType.put("hasMore", "true");
-                } else {
-                    mediaType.put("hasMore", null);
-                }
-                c.add(mediaType);
+	            for (String key : produces) {
+	                Map<String, String> mediaType = new HashMap<String, String>();
+	                // escape quotation to avoid code injection
+	                mediaType.put("mediaType", escapeText(escapeQuotationMark(key)));
+	                count += 1;
+	                if (count < produces.size()) {
+	                    mediaType.put("hasMore", "true");
+	                } else {
+	                    mediaType.put("hasMore", null);
+	                }
+	                c.add(mediaType);
+	            }
             }
             op.produces = c;
             op.hasProduces = true;
