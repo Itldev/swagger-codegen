@@ -61,6 +61,7 @@ public abstract class AbstractJavaCodegen extends DefaultCodegen implements Code
     protected Boolean serializableModel = false;
     protected boolean serializeBigDecimalAsString = false;
     protected boolean hideGenerationTimestamp = false;
+    protected boolean spring = false;
     protected String apiDocPath = "docs/";
     protected String modelDocPath = "docs/";
 
@@ -122,7 +123,8 @@ public abstract class AbstractJavaCodegen extends DefaultCodegen implements Code
                 .SERIALIZE_BIG_DECIMAL_AS_STRING_DESC));
         cliOptions.add(CliOption.newBoolean(FULL_JAVA_UTIL, "whether to use fully qualified name for classes under java.util. This option only works for Java API client"));
         cliOptions.add(new CliOption("hideGenerationTimestamp", "hides the timestamp when files were generated"));
-
+        cliOptions.add(new CliOption(CodegenConstants.SPRING, CodegenConstants.SPRING_DESC));
+        
         CliOption dateLibrary = new CliOption(DATE_LIBRARY, "Option. Date library to use");
         Map<String, String> dateOptions = new HashMap<String, String>();
         dateOptions.put("java8", "Java 8 native");
@@ -190,6 +192,10 @@ public abstract class AbstractJavaCodegen extends DefaultCodegen implements Code
         if (additionalProperties.containsKey(CodegenConstants.SERIALIZABLE_MODEL)) {
             this.setSerializableModel(Boolean.valueOf(additionalProperties.get(CodegenConstants.SERIALIZABLE_MODEL).toString()));
         }
+        
+        if(additionalProperties.containsKey(CodegenConstants.SPRING)) {
+            this.setSpring(Boolean.valueOf(additionalProperties.get(CodegenConstants.SPRING).toString()));
+        }
 
         if (additionalProperties.containsKey(CodegenConstants.LIBRARY)) {
             this.setLibrary((String) additionalProperties.get(CodegenConstants.LIBRARY));
@@ -201,6 +207,9 @@ public abstract class AbstractJavaCodegen extends DefaultCodegen implements Code
 
         // need to put back serializableModel (boolean) into additionalProperties as value in additionalProperties is string
         additionalProperties.put(CodegenConstants.SERIALIZABLE_MODEL, serializableModel);
+
+     // need to put back spring (boolean) into additionalProperties as value in additionalProperties is string
+        additionalProperties.put(CodegenConstants.SPRING, spring);
 
         if (additionalProperties.containsKey(FULL_JAVA_UTIL)) {
             this.setFullJavaUtil(Boolean.valueOf(additionalProperties.get(FULL_JAVA_UTIL).toString()));
@@ -883,7 +892,11 @@ public abstract class AbstractJavaCodegen extends DefaultCodegen implements Code
         this.serializableModel = serializableModel;
     }
 
-    private String sanitizePath(String p) {
+	public void setSpring(Boolean spring) {
+		this.spring = spring;
+	}
+
+	private String sanitizePath(String p) {
         //prefer replace a ", instead of a fuLL URL encode for readability
         return p.replaceAll("\"", "%22");
     }

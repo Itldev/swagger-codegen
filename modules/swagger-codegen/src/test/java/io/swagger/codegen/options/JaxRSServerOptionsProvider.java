@@ -55,6 +55,7 @@ public class JaxRSServerOptionsProvider implements OptionsProvider {
             .put(CodegenConstants.LIBRARY, JAXRS_DEFAULT_LIBRARY_VALUE)
             .put(CodegenConstants.SERIALIZE_BIG_DECIMAL_AS_STRING, "true")
             //.put(JavaClientCodegen.DATE_LIBRARY, "joda")
+            .put(CodegenConstants.SPRING, "true")
             .put("hideGenerationTimestamp", "true");
 
         return builder.build();

@@ -7,6 +7,11 @@ import {{invokerPackage}}.Pair;
 
 import javax.ws.rs.core.GenericType;
 
+{{#spring}}
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+{{/spring}}
+
 {{#imports}}import {{import}};
 {{/imports}}
 
@@ -19,9 +24,15 @@ import java.util.Map;
 
 {{>generatedAnnotation}}
 {{#operations}}
+{{#spring}}
+@Component
+{{/spring}}
 public class {{classname}} {
+  {{#spring}}
+  @Autowired
+  {{/spring}}
   private ApiClient {{localVariablePrefix}}apiClient;
-
+  {{^spring}}
   public {{classname}}() {
     this(Configuration.getDefaultApiClient());
   }
@@ -37,6 +48,7 @@ public class {{classname}} {
   public void setApiClient(ApiClient apiClient) {
     this.{{localVariablePrefix}}apiClient = apiClient;
   }
+  {{/spring}}
 
   {{#operation}}
   /**
