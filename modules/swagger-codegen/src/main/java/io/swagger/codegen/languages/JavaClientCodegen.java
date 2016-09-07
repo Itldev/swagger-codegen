@@ -128,9 +128,11 @@ public class JavaClientCodegen extends AbstractJavaCodegen {
             additionalProperties.put("gson", "true");
         } else if("jersey2".equals(getLibrary())) {
             supportingFiles.add(new SupportingFile("JSON.mustache", invokerFolder, "JSON.java"));
+            apiTemplateFiles.put("apiController.mustache", "Impl.java");
             additionalProperties.put("jackson", "true");
         } else if("jersey1".equals(getLibrary())) {
             additionalProperties.put("jackson", "true");
+            apiTemplateFiles.put("apiController.mustache", "Impl.java");
         } else {
             LOGGER.error("Unknown library option (-l/--library): " + getLibrary());
         }

@@ -14,12 +14,31 @@ import java.util.List;
 import java.util.Map;
 {{/fullJavaUtil}}
 
+{{#spring}}
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+{{/spring}}
+
 /**
  * API tests for {{classname}}
  */
+{{#spring}}
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(loader = AnnotationConfigContextLoader.class)
+@TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
+@ComponentScan(basePackages = "{{invokerPackage}}")
+{{/spring}}
 public class {{classname}}Test {
-
-    private final {{classname}} api = new {{classname}}();
+    {{#spring}}
+    @Autowired
+    {{/spring}}
+    private {{^spring}}final {{/spring}}{{classname}} api{{^spring}} = new {{classname}}(){{/spring}};
 
     {{#operations}}{{#operation}}
     /**
