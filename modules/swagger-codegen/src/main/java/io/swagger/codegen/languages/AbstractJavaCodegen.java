@@ -270,10 +270,10 @@ public abstract class AbstractJavaCodegen extends DefaultCodegen implements Code
 
         if("joda".equals(dateLibrary)) {
             typeMapping.put("date", "LocalDate");
-            typeMapping.put("DateTime", "DateTime");
+            typeMapping.put("DateTime", "LocalDateTime");
 
             importMapping.put("LocalDate", "org.joda.time.LocalDate");
-            importMapping.put("DateTime", "org.joda.time.DateTime");
+            importMapping.put("DateTime", "org.joda.time.LocalDateTime");
         }
         else if (dateLibrary.startsWith("java8")) {
             additionalProperties.put("java8", "true");
