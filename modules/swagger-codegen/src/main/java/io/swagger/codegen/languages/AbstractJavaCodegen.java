@@ -45,7 +45,8 @@ public abstract class AbstractJavaCodegen extends DefaultCodegen implements Code
     public static final String FULL_JAVA_UTIL = "fullJavaUtil";
     public static final String DEFAULT_LIBRARY = "<default>";
     public static final String DATE_LIBRARY = "dateLibrary";
-
+    public static final String JAVA = "java";
+    
     protected String dateLibrary = "joda";
     protected String invokerPackage = "io.swagger";
     protected String groupId = "io.swagger";
@@ -62,6 +63,7 @@ public abstract class AbstractJavaCodegen extends DefaultCodegen implements Code
     protected boolean serializeBigDecimalAsString = false;
     protected boolean hideGenerationTimestamp = false;
     protected boolean spring = false;
+    protected String jdk = null;
     protected String apiDocPath = "docs/";
     protected String modelDocPath = "docs/";
 
@@ -124,7 +126,8 @@ public abstract class AbstractJavaCodegen extends DefaultCodegen implements Code
         cliOptions.add(CliOption.newBoolean(FULL_JAVA_UTIL, "whether to use fully qualified name for classes under java.util. This option only works for Java API client"));
         cliOptions.add(new CliOption("hideGenerationTimestamp", "hides the timestamp when files were generated"));
         cliOptions.add(new CliOption(CodegenConstants.SPRING, CodegenConstants.SPRING_DESC));
-        
+        cliOptions.add(new CliOption(JAVA, "the version of jdk to use"));
+
         CliOption dateLibrary = new CliOption(DATE_LIBRARY, "Option. Date library to use");
         Map<String, String> dateOptions = new HashMap<String, String>();
         dateOptions.put("java8", "Java 8 native");
@@ -196,7 +199,9 @@ public abstract class AbstractJavaCodegen extends DefaultCodegen implements Code
         if(additionalProperties.containsKey(CodegenConstants.SPRING)) {
             this.setSpring(Boolean.valueOf(additionalProperties.get(CodegenConstants.SPRING).toString()));
         }
-
+        if(additionalProperties.containsKey(JAVA)) {
+            this.setJdk((String)additionalProperties.get(JAVA));
+        }
         if (additionalProperties.containsKey(CodegenConstants.LIBRARY)) {
             this.setLibrary((String) additionalProperties.get(CodegenConstants.LIBRARY));
         }
@@ -896,6 +901,10 @@ public abstract class AbstractJavaCodegen extends DefaultCodegen implements Code
 		this.spring = spring;
 	}
 
+	public void setJdk(String jdk) {
+		this.jdk = jdk;
+	}
+	
 	private String sanitizePath(String p) {
         //prefer replace a ", instead of a fuLL URL encode for readability
         return p.replaceAll("\"", "%22");

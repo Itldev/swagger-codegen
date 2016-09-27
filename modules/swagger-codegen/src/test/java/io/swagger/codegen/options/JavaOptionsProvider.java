@@ -42,6 +42,7 @@ public class JavaOptionsProvider implements OptionsProvider {
                 .put(CodegenConstants.SERIALIZE_BIG_DECIMAL_AS_STRING, "true")
                 .put(JavaClientCodegen.DATE_LIBRARY, "joda")
                 .put(CodegenConstants.SPRING, "true")
+                .put(JavaClientCodegen.JAVA, "1.6")
                 .put("hideGenerationTimestamp", "true")
                 .build();
     }

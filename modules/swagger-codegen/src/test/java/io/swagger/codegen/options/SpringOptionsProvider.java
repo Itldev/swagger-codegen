@@ -1,6 +1,7 @@
 package io.swagger.codegen.options;
 
 import io.swagger.codegen.CodegenConstants;
+import io.swagger.codegen.languages.JavaClientCodegen;
 import io.swagger.codegen.languages.SpringCodegen;
 
 import java.util.HashMap;
@@ -32,6 +33,7 @@ public class SpringOptionsProvider extends JavaOptionsProvider {
         options.put(SpringCodegen.SINGLE_CONTENT_TYPES, SINGLE_CONTENT_TYPES);
         options.put(SpringCodegen.JAVA_8, JAVA_8);
         options.put(SpringCodegen.ASYNC, ASYNC);
+        options.put(JavaClientCodegen.JAVA, "1.6");
 
         return options;
     }
